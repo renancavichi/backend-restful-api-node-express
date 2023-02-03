@@ -4,7 +4,8 @@
   "description": "Backend do projeto 3 modulo.",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/server",
+    "dev": "nodemon src/server"
   },
   "keywords": [
     "api",
@@ -12,5 +13,8 @@
     "express"
   ],
   "author": "Renan Cavichi",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
 }
