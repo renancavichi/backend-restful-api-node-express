@@ -1,6 +1,6 @@
 {
   "name": "backend-api-node",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Backend do projeto 3 modulo.",
   "main": "server.js",
   "scripts": {
