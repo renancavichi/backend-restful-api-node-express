@@ -1,5 +1,8 @@
 const express = require('express')
 const listaCursos = require('./db/cursos.json')
+const mysql = require('mysql')
+
+
 const app = express()
 const port = 3100
 
@@ -9,7 +12,23 @@ app.get('/', (req, res) => {
 })
 
 app.get('/cursos', (req, res) => {
-    res.json(listaCursos)
+  const con = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "apinode"
+  })
+
+  con.connect((err) => {
+    if (err) throw err;
+    const sql = "select * from cursos;"
+    con.query(sql, function (err, result) {
+      if (err) throw err;
+      //TODO return result with JSON
+    })
+  });
+
+  res.json(listaCursos)
 })
 
 app.post('/cursos', (req, res) => {
