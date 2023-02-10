@@ -24,11 +24,12 @@ app.get('/cursos', (req, res) => {
     const sql = "select * from cursos;"
     con.query(sql, function (err, result) {
       if (err) throw err;
-      //TODO return result with JSON
+      const objResult = JSON.parse(JSON.stringify(result))
+      res.json(objResult)
     })
   });
 
-  res.json(listaCursos)
+ 
 })
 
 app.post('/cursos', (req, res) => {
