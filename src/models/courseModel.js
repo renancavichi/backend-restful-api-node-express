@@ -6,7 +6,7 @@ courseModel.listAllCourses = (callback) => {
     host: "localhost",
     user: "root",
     password: "",
-    database: "apinode2"
+    database: "apinode"
   })
   const sql = "SELECT * FROM cursos;"
   con.query(sql, (err, result) => {
