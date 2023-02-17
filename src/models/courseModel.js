@@ -1,7 +1,6 @@
 const mysql = require('mysql')
 const courseModel = {}
 
-
 courseModel.listAllCourses = (callback) => {
   const con = mysql.createConnection({
     host: "localhost",
@@ -10,11 +9,11 @@ courseModel.listAllCourses = (callback) => {
     database: "apinode2"
   })
   const sql = "SELECT * FROM cursos;"
-  con.query(sql, (err, results) => {
+  con.query(sql, (err, result) => {
     if (err) {
       callback(err, null)
     } else {
-      callback(null, results)
+      callback(null, result)
     }
   })
 }
