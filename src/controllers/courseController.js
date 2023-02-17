@@ -1,13 +1,19 @@
 const mysql = require('mysql')
 const courseModel = require('../models/courseModel')
+
 const courseController = {}
 
 courseController.listAllCourses = (req, res) => {
-  courseModel.listAllCourses(req, res)
+  courseModel.listAllCourses((error, result) => {
+    if (error)
+      res.status(500).json({ message: "Erro no Banco de Dados" })
+    if (result)
+      res.json(result)
+  })
 }
 
 courseController.createCourse = (req, res) => {
-  res.json({ message: "Entrou na rota /course com POST!" })
+  courseModel.createCourse(req, res)
 }
 
 module.exports = courseController
