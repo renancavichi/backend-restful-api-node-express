@@ -13,7 +13,16 @@ courseController.listAllCourses = (req, res) => {
 }
 
 courseController.createCourse = (req, res) => {
-  courseModel.createCourse(req, res)
+
+  const course = req.body
+  //TODO Verificar se os dados são válidos
+
+  courseModel.createCourse(course, (error, result) => {
+    if (error)
+      res.status(500).json({ message: "Erro no Banco de Dados" })
+    if (result)
+      res.json({ message: "Curso Cadastrado!" })
+  })
 }
 
 module.exports = courseController
