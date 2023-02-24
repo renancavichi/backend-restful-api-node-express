@@ -15,10 +15,22 @@ courseModel.listAllCourses = (callback) => {
 
 courseModel.createCourse = (course, callback) => {
   const { curso, cargahoraria } = course
-  const sql = 'INSERT INTO cursos (nome, cargahoraria) VALUES (?, ?);'
-  const values = [curso, cargahoraria]
+  const sql = 'INSERT INTO cursos SET ?;'
+  const values = { curso, cargahoraria }
 
   con.query(sql, values, (err, result) => {
+    if (err) {
+      callback(err, null)
+    } else {
+      callback(null, result)
+    }
+  })
+}
+
+courseModel.deleteCourse = (id, callback) => {
+  const sql = 'DELETE FROM cursos WHERE id = ?;'
+  const value = [id]
+  con.query(sql, value, (err, result) => {
     if (err) {
       callback(err, null)
     } else {
