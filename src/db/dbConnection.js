@@ -1,4 +1,4 @@
-const mysql = require('mysql')
+import mysql from 'mysql'
 
 const con = mysql.createConnection({
   host: "localhost",
@@ -7,4 +7,4 @@ const con = mysql.createConnection({
   database: "apinode"
 })
 
-module.exports = con
+export default con

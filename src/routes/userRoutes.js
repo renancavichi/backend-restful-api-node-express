@@ -1,4 +1,5 @@
-const express = require('express')
+import express from 'express'
+
 const router = express.Router()
 
 router.get('/', (req, res) => {
@@ -9,4 +10,4 @@ router.post('/', (req, res) => {
   res.json({ message: "Entrou na rota /user com POST!" })
 })
 
-module.exports = router
+export default router
