@@ -57,6 +57,4 @@ export const updateCourse = (course, callback) => {
   })
 }
 
-const courseModel = { listAllCourses, createCourse, deleteCourse, updateCourse }
-
-export default courseModel
+export default { listAllCourses, createCourse, deleteCourse, updateCourse }
