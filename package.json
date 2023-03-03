@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Backend do projeto 3 modulo.",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node src/server",
     "dev": "nodemon src/server"
