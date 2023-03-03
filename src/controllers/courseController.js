@@ -1,4 +1,3 @@
-import mysql from 'mysql'
 import courseModel from '../models/courseModel.js'
 
 export const listAllCourses = (req, res) => {
@@ -13,7 +12,7 @@ export const listAllCourses = (req, res) => {
 export const createCourse = (req, res) => {
   const course = req.body
   //TODO Verificar se os dados são válidos
-  newCourse(course, (error, result) => {
+  courseModel.createCourse(course, (error, result) => {
     if (error)
       res.status(500).json({ message: "Erro no Banco de Dados" })
     if (result)
