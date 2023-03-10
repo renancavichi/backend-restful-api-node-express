@@ -8,6 +8,7 @@ const app = express()
 const port = SERVER.PORT
 
 app.use(express.json())
+//app.use(express.urlencoded({ extended: false })) // form urlenconded
 
 //TODO: Tratar erro de json inválido
 
