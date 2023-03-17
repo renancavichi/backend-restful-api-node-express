@@ -29,8 +29,13 @@ export const createUser = (req, res) => {
     if (error)
       res.status(500).json({ message: "Erro no Banco de Dados" })
     if (result) {
-      console.log(result.insertId)
-      res.json({ message: "Usuário Cadastrado!" })
+      res.json({
+        message: "Usuário Cadastrado!",
+        user: {
+          id: result.insertId,
+          ...user
+        }
+      })
     }
   })
 }
@@ -42,9 +47,11 @@ export const deleteUser = (req, res) => {
     if (error)
       res.status(500).json({ message: "Erro no Banco de Dados" })
     if (result) {
-      //TODO Verificar se ao menos uma linha foi removida!
-      console.log(result.affectedRows)
-      res.json({ message: "Usuário Deletado com Sucesso!" })
+      if (result.affectedRows) {
+        res.json({ message: "Usuário Deletado com Sucesso!" })
+      } else {
+        res.status(404).json({ message: `Usuário ${id} não encontrado` })
+      }
     }
   })
 }
@@ -56,9 +63,11 @@ export const deleteIdUser = (req, res) => {
     if (error)
       res.status(500).json({ message: "Erro no Banco de Dados" })
     if (result) {
-      //TODO Verificar se ao menos uma linha foi removida!
-      console.log(result.affectedRows)
-      res.json({ message: "Curso Deletado com Sucesso!" })
+      if (result.affectedRows) {
+        res.json({ message: "Usuário Deletado com Sucesso!" })
+      } else {
+        res.status(404).json({ message: `Usuário ${id} não encontrado` })
+      }
     }
   })
 }
@@ -71,8 +80,11 @@ export const updateUser = (req, res) => {
     if (error)
       res.status(500).json({ message: "Erro no Banco de Dados" })
     if (result) {
-      console.log(result.affectedRows)
-      res.json({ message: "Usuário Atualizado!" })
+      if (result.affectedRows) {
+        res.json({ message: "Usuário Atualizado com Sucesso!" })
+      } else {
+        res.status(404).json({ message: `Usuário ${user.id} não encontrado` })
+      }
     }
   })
 }

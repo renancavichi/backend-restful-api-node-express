@@ -26,8 +26,15 @@ export const createCourse = (req, res) => {
   courseModel.createCourse(course, (error, result) => {
     if (error)
       res.status(500).json({ message: "Erro no Banco de Dados" })
-    if (result)
-      res.json({ message: "Curso Cadastrado!" })
+    if (result) {
+      res.json({
+        message: "Curso Cadastrado!",
+        course: {
+          id: result.insertId,
+          ...course
+        }
+      })
+    }
   })
 }
 
@@ -37,9 +44,13 @@ export const deleteCourse = (req, res) => {
   courseModel.deleteCourse(id, (error, result) => {
     if (error)
       res.status(500).json({ message: "Erro no Banco de Dados" })
-    if (result)
-      //TODO Verificar se ao menos uma linha foi removida!
-      res.json({ message: "Curso Deletado com Sucesso!" })
+    if (result) {
+      if (result.affectedRows) {
+        res.json({ message: "Curso deletado com Sucesso!" })
+      } else {
+        res.status(404).json({ message: `Curso ${id} não encontrado` })
+      }
+    }
   })
 }
 
@@ -49,9 +60,13 @@ export const deleteIdCourse = (req, res) => {
   courseModel.deleteCourse(id, (error, result) => {
     if (error)
       res.status(500).json({ message: "Erro no Banco de Dados" })
-    if (result)
-      //TODO Verificar se ao menos uma linha foi removida!
-      res.json({ message: "Curso Deletado com Sucesso!" })
+    if (result) {
+      if (result.affectedRows) {
+        res.json({ message: "Curso deletado com Sucesso!" })
+      } else {
+        res.status(404).json({ message: `Curso ${id} não encontrado` })
+      }
+    }
   })
 }
 
@@ -62,7 +77,12 @@ export const updateCourse = (req, res) => {
   courseModel.updateCourse(course, (error, result) => {
     if (error)
       res.status(500).json({ message: "Erro no Banco de Dados" })
-    if (result)
-      res.json({ message: "Curso Atualizado!" })
+    if (result) {
+      if (result.affectedRows) {
+        res.json({ message: "Curso Atualizado com Sucesso!" })
+      } else {
+        res.status(404).json({ message: `Curso ${course.id} não encontrado` })
+      }
+    }
   })
 }
