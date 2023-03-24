@@ -6,7 +6,7 @@ export const listAllUsers = (req, res) => {
       res.status(500).json({ message: "Erro no Banco de Dados" })
     if (result) {
       if (result.length) {
-        res.json(result[0])
+        res.json(result)
       } else {
         res.json({ message: "Nenhum usuário cadastrado!" })
       }
@@ -21,7 +21,7 @@ export const showUser = (req, res) => {
     if (error)
       res.status(500).json({ message: "Erro no Banco de Dados" })
     if (result)
-      res.json(result)
+      res.json(result[0])
   })
 }
 
