@@ -14,6 +14,7 @@ app.use(express.json())
 
 app.use('/course', courseRoutes)
 app.use('/user', userRoutes)
+
 app.all('*', (req, res) => {
   res.status(404).json({ message: '404 Rota não encontrada...' })
 })
