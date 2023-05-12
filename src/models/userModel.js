@@ -1,13 +1,16 @@
 import con from '../db/dbConnection.js'
 import { z } from 'zod'
+import sha256 from '../helper/sha256.js'
 
 //TODO Testar regex com zod e ChatGPT
 
 const userSchema = z.object({
   id:
-    z.number({ message: "ID deve ser um valor numérico." })
-      .optional(),
-  nome:
+    z.number({
+      required_error: "ID é obrigatório.",
+      invalid_type_error: "ID deve ser um número.",
+    }),
+  name:
     z.string({
       required_error: "Nome é obrigatória.",
       invalid_type_error: "Nome deve ser uma string.",
@@ -22,7 +25,7 @@ const userSchema = z.object({
       .email({ message: "Email Inválido." })
       .min(5, { message: "O email deve ter ao menos 5 caracteres." })
       .max(200, { message: "Email deve ter no máximo 200 caracteres." }),
-  senha:
+  pass:
     z.string({
       required_error: "Senha é obrigatória.",
       invalid_type_error: "Senha deve ser uma string.",
@@ -31,18 +34,23 @@ const userSchema = z.object({
       .max(256, { message: "Senha deve ter no máximo 256 caracteres." }),
   avatar:
     z.string({
-      required_error: "Avatar é obrigatória.",
-      invalid_type_error: "Avatar deve ser uma string.",
+      message: "Avatar deve ser uma string.",
     })
       .url({ message: "Avatar deve ser uma URL válida." })
+      .optional()
 })
 
-export const validateUser = (user) => {
+export const validateUserToCreate = (user) => {
+  const partialUserSchema = userSchema.partial({ id: true });
+  return partialUserSchema.safeParse(user)
+}
+
+export const validateUserToUpdate = (user) => {
   return userSchema.safeParse(user)
 }
 
 export const listAllUsers = (callback) => {
-  const sql = "SELECT * FROM usuarios;"
+  const sql = "SELECT * FROM users;"
   con.query(sql, (err, result) => {
     if (err) {
       callback(err, null)
@@ -54,7 +62,7 @@ export const listAllUsers = (callback) => {
 }
 
 export const showUser = (id, callback) => {
-  const sql = "SELECT * FROM usuarios WHERE id = ?;"
+  const sql = "SELECT * FROM users WHERE id = ?;"
   const value = [id]
   con.query(sql, value, (err, result) => {
     if (err) {
@@ -67,10 +75,10 @@ export const showUser = (id, callback) => {
 }
 
 export const createUser = (user, callback) => {
-  const { nome, email, senha, avatar } = user
+  const { name, email, pass, avatar } = user
 
-  const sql = 'INSERT INTO usuarios (nome, email, senha, avatar) VALUES (?, ?, ?, ?);'
-  const values = [nome, email, senha, avatar]
+  const sql = 'INSERT INTO users (name, email, pass, avatar) VALUES (?, ?, ?, ?);'
+  const values = [name, email, sha256(pass), avatar]
 
   con.query(sql, values, (err, result) => {
     if (err) {
@@ -83,7 +91,7 @@ export const createUser = (user, callback) => {
 }
 
 export const deleteUser = (id, callback) => {
-  const sql = 'DELETE FROM usuarios WHERE id = ?;'
+  const sql = 'DELETE FROM users WHERE id = ?;'
   const value = [id]
   con.query(sql, value, (err, result) => {
     if (err) {
@@ -96,9 +104,9 @@ export const deleteUser = (id, callback) => {
 }
 
 export const updateUser = (user, callback) => {
-  const { id, nome, email, senha, avatar } = user
-  const sql = 'UPDATE usuarios SET nome = ?, email = ?, senha = ?, avatar = ?  WHERE id = ? ;'
-  const values = [nome, email, senha, avatar, id]
+  const { id, name, email, pass, avatar } = user
+  const sql = 'UPDATE users SET name = ?, email = ?, pass = ?, avatar = ?  WHERE id = ? ;'
+  const values = [name, email, pass, avatar, id]
 
   con.query(sql, values, (err, result) => {
     if (err) {
@@ -110,4 +118,17 @@ export const updateUser = (user, callback) => {
   })
 }
 
-export default { listAllUsers, showUser, createUser, deleteUser, updateUser, validateUser }
+export const loginUser = (email, pass, callback) => {
+  const sql = 'SELECT * FROM users WHERE email = ? AND pass = ?;'
+  const value = [email, sha256(pass)]
+  con.query(sql, value, (err, result) => {
+    if (err) {
+      callback(err, null)
+      console.log(`DB Error: ${err.sqlMessage}`)
+    } else {
+      callback(null, result)
+    }
+  })
+}
+
+export default { listAllUsers, showUser, createUser, deleteUser, updateUser, validateUserToCreate, validateUserToUpdate, loginUser }
