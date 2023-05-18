@@ -50,7 +50,7 @@ export const validateUserToUpdate = (user) => {
 }
 
 export const listAllUsers = (callback) => {
-  const sql = "SELECT * FROM users;"
+  const sql = "SELECT id, name, email, avatar, roles FROM users;"
   con.query(sql, (err, result) => {
     if (err) {
       callback(err, null)
@@ -62,7 +62,7 @@ export const listAllUsers = (callback) => {
 }
 
 export const showUser = (id, callback) => {
-  const sql = "SELECT * FROM users WHERE id = ?;"
+  const sql = "SELECT id, name, email, avatar, roles FROM users WHERE id = ?;"
   const value = [id]
   con.query(sql, value, (err, result) => {
     if (err) {
@@ -104,9 +104,9 @@ export const deleteUser = (id, callback) => {
 }
 
 export const updateUser = (user, callback) => {
-  const { id, name, email, pass, avatar } = user
-  const sql = 'UPDATE users SET name = ?, email = ?, pass = ?, avatar = ?  WHERE id = ? ;'
-  const values = [name, email, pass, avatar, id]
+  const { id, name, email, avatar } = user
+  const sql = 'UPDATE users SET name = ?, email = ?, avatar = ?  WHERE id = ? ;'
+  const values = [name, email, avatar, id]
 
   con.query(sql, values, (err, result) => {
     if (err) {
