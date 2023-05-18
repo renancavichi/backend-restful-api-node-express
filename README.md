@@ -1,9 +1,17 @@
 # Node API with Express
 
-## Second Commit
+### Routes
 
-```javascript
-const teste = () => {
-  console.log("olá")
-}
-```
+USER
+
+GET user/
+GET user/:id
+POST user/
+DELETE user/
+DELETE user/:id
+PUT user/
+
+AUTH
+
+POST /auth/login
+POST /auth/logout
