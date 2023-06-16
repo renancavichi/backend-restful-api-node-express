@@ -55,7 +55,8 @@ export const listAllUsers = (callback) => {
   con.query(sql, (err, result) => {
     if (err) {
       callback(err, null)
-      console.log(`DB Error: ${err.sqlMessage}`)
+      console.log(`DB Error list all: ${err}`)
+      console.log(`DB Error list all: ${err.sqlMessage}`)
     } else {
       callback(null, result)
     }
